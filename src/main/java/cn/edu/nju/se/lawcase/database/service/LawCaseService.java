@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -104,5 +105,31 @@ public class LawCaseService {
 		for (int caseindex = 0; caseindex < lawCaseList.size(); caseindex++) {
 			lawCaseList.get(caseindex).setFullTextId(lawcaseDocList.get(caseindex).get("_id").toString());
 		}
+	}
+	
+	public static JavaRDD<Document> sparkFind(JavaSparkContext jsc, int num,int start) {
+		Map<String, String> readOverrides = new HashMap<String, String>();
+	    readOverrides.put("collection", "lawcase");
+	    readOverrides.put("readPreference.name", "secondaryPreferred");
+	    ReadConfig readConfig = ReadConfig.create(jsc).withOptions(readOverrides);
+	    JavaMongoRDD<Document> lawcasewordsDocs = MongoSpark.load(jsc, readConfig);
+	    
+	    ArrayList<Document> list = new ArrayList<Document>();
+	    list.add(Document.parse("{ $skip: "+start+"}")); 
+	    list.add(Document.parse("{ $limit:"+num+"}"));
+	    JavaMongoRDD<Document> aggregatedRdd = lawcasewordsDocs.withPipeline(list);
+	    System.out.println(aggregatedRdd.count());
+	    System.out.println(aggregatedRdd.first().get("_id"));
+	    //aggregatedRdd.foreach((doc)->{System.out.println(doc.get("_id").toString());});
+		return aggregatedRdd;
+	}
+	
+	public static JavaRDD<Document> sparkFindALL(JavaSparkContext jsc) {
+		Map<String, String> readOverrides = new HashMap<String, String>();
+	    readOverrides.put("collection", "lawcase");
+	    readOverrides.put("readPreference.name", "secondaryPreferred");
+	    ReadConfig readConfig = ReadConfig.create(jsc).withOptions(readOverrides);
+	    JavaRDD<Document> lawcasewordsDocs = MongoSpark.load(jsc, readConfig);
+		return lawcasewordsDocs;
 	}
 }

@@ -21,18 +21,22 @@ import org.bson.Document;
 import static java.util.Arrays.asList;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SparkLawCaseStore {
 	public static void main(final String[] args) throws InterruptedException {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
 		String filepath = "F:\\研一work\\xml民事案件";// 文件夹路径
 
 		List<File> files = XmlToLawCase.getFileList(filepath);
 		Segment.init();
-
-		JavaSparkContext jsc = SparkHelper.getJSC();
+		System.out.println(df.format(new Date())+"--start");
+		JavaSparkContext jsc = SparkHelper.getJSC(SparkHelper.LAWCASE);
 
 		JavaRDD<File> fileRDD = jsc.parallelize(files);
 
@@ -49,6 +53,7 @@ public class SparkLawCaseStore {
 		JavaRDD<LawCase> afterFullRdd = LawCaseService.sparkWriteFullText(jsc, lawcaseRdd);
 		JavaRDD<LawCase> afterWriteRdd = ParagraphService.sparkWriteLawCase(jsc, afterFullRdd);
 		LawReferenceService.sparkWrite(jsc,afterWriteRdd);
+		System.out.println(df.format(new Date())+"--end");
 		SparkHelper.closeJSC();
 	}
 }

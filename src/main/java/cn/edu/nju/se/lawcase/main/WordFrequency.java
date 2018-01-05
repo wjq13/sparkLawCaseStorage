@@ -22,6 +22,7 @@ public class WordFrequency {
 	public static void main(String args[]){
 		
 		FindIterable<Document> lawcaseParagraphs = ParagraphService.findALL();
+		System.out.println("paragraph findALL OK");
 		for(Document lawcaseParagraph : lawcaseParagraphs){
 			LawCaseWords lawcaseWords = generateLawCaseTF(lawcaseParagraph);
 			LawCaseWordsService.writeLawCaseWords(lawcaseWords);

@@ -5,10 +5,10 @@ import com.mongodb.client.*;
 
 public class MongodbHelper {
 	static final String DBName = "test";
-	static final String ServerAddress = "localhost";
-	static final int PORT = 27017;
-//	static final String ServerAddress = "192.168.68.220";
-//	static final int PORT = 30000;
+//	static final String ServerAddress = "localhost";
+//	static final int PORT = 27017;
+	static final String ServerAddress = "192.168.68.11";
+	static final int PORT = 20000;
 
 	private static MongoClient mongoClient = null;
 	private static MongoDatabase mongoDataBase = null;
@@ -33,6 +33,21 @@ public class MongodbHelper {
 				// 连接到数据库
 				mongoClient = getMongoClient();
 				mongoDataBase = mongoClient.getDatabase(DBName);
+				System.out.println("Connect to DataBase successfully");
+			} 
+			return mongoDataBase;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static MongoDatabase getMongoDataBase(String db) {
+		try {
+			if (mongoDataBase == null) {
+				// 连接到数据库
+				mongoClient = getMongoClient();
+				mongoDataBase = mongoClient.getDatabase(db);
 				System.out.println("Connect to DataBase successfully");
 			} 
 			return mongoDataBase;

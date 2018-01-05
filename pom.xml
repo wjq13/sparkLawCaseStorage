@@ -150,6 +150,14 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>nju</groupId>
+			<artifactId>jna</artifactId>
+			<version>4.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/jna-4.0.0.jar</systemPath>
+		</dependency>
 
 	</dependencies>
 

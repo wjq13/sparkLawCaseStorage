@@ -24,7 +24,7 @@ public class SparkTFIDF {
 	
 	static Map<String, Integer> worddocCount = new HashMap<>();
 	public static void main(String args[]) {
-		JavaSparkContext jsc = SparkHelper.getJSC();
+		JavaSparkContext jsc = SparkHelper.getJSC(SparkHelper.LAWCASE);
 		int filenum = ParagraphService.sparkCountAll(jsc);
 		worddocCount = SingleWordService.sparkFindALLWordCount(jsc);
 		JavaRDD<Document> lawcaseWords = LawCaseWordsService.sparkFindALL(jsc);

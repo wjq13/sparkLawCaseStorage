@@ -14,7 +14,7 @@ public class Segment {
 	 * NLPIR接口定义
 	 */
 	public interface CLibrary extends Library {
-		CLibrary Instance = (CLibrary) Native.loadLibrary("SegmentationJars/NLPIR", CLibrary.class);
+		CLibrary Instance = (CLibrary) Native.loadLibrary("/opt/SegmentationJars/libNLPIR.so", CLibrary.class);
 		// 定义并初始化接口的静态变量 这一个语句是来加载 dll 的，注意 dll 文件的路径,可以是绝对路径也可以是相对路径，只需要填写 dll 的文件名，不能加后缀。
 
 		// 初始化函数声明
@@ -35,7 +35,7 @@ public class Segment {
 	 * @return
 	 */
 	public static boolean init(){
-		String argu = "";
+		String argu = "/opt";
 		String system_charset = "utf8";
 		int charset_type = 1;
 		int init_flag;
